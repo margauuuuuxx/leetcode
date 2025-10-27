@@ -8,32 +8,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void    set_returnColumSizes(int *returnSize, int **returnColumnSizes) {
-    *returnColumnSizes = malloc(*returnSize * sizeof(int));
-    if (!*returnColumnSizes)
-        return;
-    for (int i = 0; i < *returnSize; i++)
-        (*returnColumnSizes)[i] = 2;
-}
-
-void    merge_intervals(int **intervals, int intervals_nbr, int **result, int *return_size) {
+int **merge_intervals(int **intervals, int intervals_nbr, int *return_size, int **returnColumnSizes) {
     int j;
-
+    
     j = 0;
-    result[0][0] = intervals[0][0];
-    result[0][1] = intervals[0][1];
     for (int i = 1; i < intervals_nbr; i++) {
-        if (result[j][1] >= intervals[i][0]) {
-            if (result[j][1] < intervals[i][1])
-                result[j][1] = intervals[i][1];
+        if (intervals[j][1] >= intervals[i][0]) {
+            if (intervals[j][1] < intervals[i][1])
+            intervals[j][1] = intervals[i][1];
         }
         else {
             j++;
-            result[j][0] = intervals[i][0];
-            result[j][1] = intervals[i][1];
+            intervals[j][0] = intervals[i][0];
+            intervals[j][1] = intervals[i][1];
         }
     }
     *return_size = j + 1;
+    *returnColumnSizes = malloc(*return_size * sizeof(int));
+    if (!*returnColumnSizes)
+        return (NULL);
+    for (int i = 0; i < *return_size; i++)
+        (*returnColumnSizes)[i] = 2;
+    return (intervals);
 }
 
 void    merge_sorted(int **intervals, int left, int mid, int right) {
@@ -87,7 +83,6 @@ void    merge_sorted(int **intervals, int left, int mid, int right) {
 void    sort_intervals(int **intervals, int left, int right) {
     int mid;
 
-
     if (left < right) {
         mid = left + (right - left) / 2;
         sort_intervals(intervals, left, mid);
@@ -97,24 +92,10 @@ void    sort_intervals(int **intervals, int left, int right) {
 }
 
 int** merge(int** intervals, int intervalsSize, int* intervalsColSize, int* returnSize, int** returnColumnSizes) {
-    int **result;
-    
-    result = malloc(intervalsSize * sizeof(*result));
-    if (!result)
-    return (NULL);
-for (int i = 0; i < intervalsSize; i++) {
-    result[i] = malloc(2 * sizeof(int));
-    if (!result[i]) {
-        for (int j = 0; j < i; j++)
-        free(result[j]);
-    free(result);
-    return (NULL);
-}
-}
-sort_intervals(intervals, 0, intervalsSize - 1);
-merge_intervals(intervals, intervalsSize, result, returnSize);
-set_returnColumSizes(returnSize, returnColumnSizes);
-return (result);
+    if (intervalsSize == 0)
+        return (NULL);
+    sort_intervals(intervals, 0, intervalsSize - 1);
+    return (merge_intervals(intervals, intervalsSize, returnSize, returnColumnSizes));
 }
 
 void    print_array(int **array, int size) {
