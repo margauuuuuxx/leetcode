@@ -4,34 +4,47 @@
 typedef struct {
     int *data;
     int front;
-    int back;
-    int len;
+    int rear;
 }   Array;
 
 void    init_array(Array *arr, int len, int *nums) {
     arr->data = malloc(len * sizeof(int));
     if (!arr->data)
         return;
-    for (int i = 0; i < len; i++) {
-        arr->data[i] = nums[i];
-    }
     arr->front = 0;
-    arr->back = len - 1;
-    arr->len = len;
+    arr->rear = len - 1;
+    for (int i = 0; i < len; i++)
+        arr->data[i] = nums[i];
 }
 
-void *next_greater(Array *arr, int len, int *returnSize, int *result) {
-    printf("ICIIII\n");
+void next_greater(Array *arr, int len, int *returnSize, int *result) {
+    int k;
+
     for (int i = 0; i < len; i++) {
-        for (int j = i + 1; j < len; j++) {
-            if (arr->data[j] > arr->data[i]) {
-                result[i] = arr->data[j];
+        result[i] = -1;
+        for (int j = 1; j < len; j++) {
+            k = (i + j) % len;
+            if (arr->data[k] > arr->data[i]) {
+                result[i] = arr->data[k];
                 break;
             }
-            result[i] = -1;
         }
     }
     *returnSize = len;
+}
+
+int* nextGreaterElements(int* nums, int numsSize, int* returnSize) {
+    int     *result;
+    Array   arr;
+    
+    if (numsSize == 0)
+    return (NULL);
+    result = malloc(numsSize * sizeof(int));
+    if (!result)
+            return (NULL);
+    init_array(&arr, numsSize, nums);
+    next_greater(&arr, numsSize, returnSize, result);
+    return (result);
 }
 
 void    print_array(int *arr, int len) {
@@ -44,35 +57,15 @@ void    print_array(int *arr, int len) {
     printf("]\n");
 }
 
-int* nextGreaterElements(int* nums, int numsSize, int* returnSize) {
-    int     *result;
-    Array   arr;
-
-    if (numsSize == 0)
-        return (NULL);
-    result = malloc(numsSize * sizeof(int));
-    if (!result)
-        return (NULL);
-    if (numsSize == 1)
-        result[0] = -1;
-    else {
-        init_array(&arr, numsSize, nums);
-        printf("array struct array: ");
-        print_array(arr.data, numsSize);
-        next_greater(&arr, numsSize, returnSize, result);
-    }
-    return (result);
-}
-
 int main() {
     int *result;
-    int nums[6] = {9, 7, 2, 3, 4, 4};
-    int len = 6;
-    int *return_len = NULL;
+    int nums[1] = {1};
+    int len = 1;
+    int return_len = 0;
 
     printf("Initial array: ");
     print_array(nums, len);
-    result = nextGreaterElements(nums, len, return_len);
+    result = nextGreaterElements(nums, len, &return_len);
     printf("Greater array: ");
     print_array(result, len);
 }
