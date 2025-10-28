@@ -44,8 +44,8 @@ void    find_warmer(int *temperatures, int len, int *answer, int *returnSize, St
 
     for (int i = 0; i < len; i++) {
         //printf("i = %d; temp[i] = %d ; stack->top = %d ; temp[top] = %d\n\n", i, temperatures[i], top(stack), temperatures[top(stack)]);
-        while (!is_empty(stack) && temperatures[i] > temperatures[top(stack)]) {
-            idx = top(stack);
+        while (stack->top != -1 && temperatures[i] > temperatures[stack->elements[stack->top]]) {
+            idx = stack->elements[stack->top];
             answer[idx] = i - idx;
             pop(stack); 
         }
