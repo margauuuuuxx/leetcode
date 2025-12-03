@@ -1,0 +1,3 @@
+***** Compiling ts *****
+    1. tsc 242.ts
+    2. node 242.js
