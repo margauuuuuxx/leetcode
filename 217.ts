@@ -11,12 +11,12 @@ function containsDuplicate(nums: number[]): boolean {
     return (false);
 };
 
-function main() {
-    const nums: number[] = [1, 2, 3];
-    const nums2: number[] = [1, 2, 3, 1];
+// function main() {
+//     const nums: number[] = [1, 2, 3];
+//     const nums2: number[] = [1, 2, 3, 1];
 
-    console.log(containsDuplicate(nums));
-    console.log(containsDuplicate(nums2));
-}
+//     console.log(containsDuplicate(nums));
+//     console.log(containsDuplicate(nums2));
+// }
 
-main();
+// main();
