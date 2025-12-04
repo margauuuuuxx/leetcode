@@ -1,3 +1,14 @@
 ***** Compiling ts *****
     1. tsc 242.ts
     2. node 242.js
+
+With the tsconfig.json file:
+    1. tsc  (compiles all ts files)
+    2. node 242.js
+
+With the package.json script 
+    1. npm run build    (compiles all .ts files)
+
+***** Deleting .js *****
+Using the package.json
+    1. npm run clean

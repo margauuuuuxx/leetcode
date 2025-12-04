@@ -1,14 +1,14 @@
 function containsDuplicate(nums: number[]): boolean {
-    const nbrCount: Record<number, number> = {};
-    
+    // new is not mean allowing memory like in CPP but set is technically a class so you need the new keyword to create an instance
+    const seen = new Set<number>(); 
+
     for (const n of nums) {
-        nbrCount[n] = (nbrCount[n] || 0) + 1;
-        if (nbrCount[n] > 1)
+        if (seen.has(n))
             return (true);
+        seen.add(n);
     }
 
     return (false);
-
 };
 
 function main() {
